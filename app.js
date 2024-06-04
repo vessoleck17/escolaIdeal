@@ -244,11 +244,9 @@ app.get('/v1/escola_ideal/somaFrequencia/:id', cors(), async function(request, r
     let idMatricula = request.params.id
 
     let somaFaltas = await controllerFrequencia.getSomaFaltas(idMatricula)
-   
-
+    
     if(somaFaltas){
-
-        response.json(somaFaltas.stringfy)
+        response.json(somaFaltas)
         response.status(200)
     }else{
       

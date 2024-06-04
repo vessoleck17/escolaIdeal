@@ -26,17 +26,14 @@ const insertFrequencia = async function (dadosFrequencia){
     }
 }
 
-const somarFaltas = async function (id_matricula){
+const selectSomarFaltas = async function (id_matricula, dadosFrequencia){
     try{
 
-        let sql = `SELECT COUNT(*), id_matricula FROM tbl_frequencia where status=true and id_matricula=${id_matricula};`
-
+        let sql = `SELECT COUNT(*) as faltas, id_matricula FROM tbl_frequencia where status=1 and id_matricula=${id_matricula};`
         let rsFaltas = await prisma.$queryRawUnsafe(sql)
 
         return rsFaltas
-
-
-
+        
     }catch(error){
         return false
     }
@@ -57,6 +54,6 @@ const selectLastId = async function(){
 
 module.exports = {
     insertFrequencia,
-    somarFaltas,
+    selectSomarFaltas,
     selectLastId
 }

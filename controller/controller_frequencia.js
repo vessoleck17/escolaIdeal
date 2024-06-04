@@ -1,6 +1,6 @@
-const frequenciasDAO = require('../model/DAO/frequencia')
+const frequenciasDAO = require('../model/DAO/frequencia.js')
 
-const message = require('../modulo/config')
+const message = require('../modulo/config.js')
 
 const { application } = require('express')
 
@@ -16,8 +16,8 @@ const getSomaFaltas = async function (id_matricula){
         if(idMatricula == '' || idMatricula == null || idMatricula == undefined || isNaN(idMatricula)){
             return message.ERROR_INVALID_ID
         }else{
-            let dadosFrequencia = await frequenciasDAO.somarFaltas(idMatricula)
-
+            let dadosFrequencia = await frequenciasDAO.selectSomarFaltas(idMatricula)
+            dadosFrequencia[0].faltas = Number(String(dadosFrequencia[0].faltas).replace('n', ''))
             if(dadosFrequencia){
                 frequenciaJson.faltas = dadosFrequencia
                 frequenciaJson.status_code = 200
@@ -25,12 +25,11 @@ const getSomaFaltas = async function (id_matricula){
                 return frequenciaJson
 
             }else{
-                ERROR_INTERNAL_SERVER_DB
+              return message.ERROR_INTERNAL_SERVER_DB
             }
         }
 
     }catch(error){
-        console.log(error);
         return message.ERROR_INTERNAL_SERVER
     }
 }
@@ -54,17 +53,18 @@ const setInserirFrequencia = async function (dadosFrequencia, contentType){
             }else{
                 
                 let novaFrequencia = await frequenciasDAO.insertFrequencia(dadosFrequencia)
-                if(novaDisciplina){
+
+                
+                if(novaFrequencia){
 
                     let idFrequencia = await frequenciasDAO.selectLastId()
-                    dadosFrequenciaa.id = idFrequencia[0].id
+                    dadosFrequencia.id = idFrequencia[0].id
 
-                    frequenciaJson.Frequenciaa = dadosFrequencia
-                    frequenciaJson.message = message.SUCESS_CREATED_ITEM.message
+                    frequenciaJson.frequencias = dadosFrequencia
                     frequenciaJson.status_code = message.SUCESS_CREATED_ITEM.status_code
 
                      
-                    return FrequenciaaJson
+                    return frequenciaJson
                 }
             }
 
