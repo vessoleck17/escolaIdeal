@@ -22,6 +22,7 @@ const bodyParserJson = bodyParser.json()
 const controllerDisciplinas = require('./controller/controller_disciplinas')
 const controllerComunicados = require('./controller/controller.comunicados.js')
 const controllerTurmas = require('./controller/controller_turmas.js')
+const controllerFrequencia = require('./controller/controller_frequencia.js')
 
 /****************************** DISCIPLINAS  ***********************************/
 
@@ -233,6 +234,44 @@ app.get('/v1/escola_ideal/turma/:id', cors(), async function(request, response){
     }
     
     
+})
+
+/**************************************  FREQUENCIA  *************************************/
+
+app.get('/v1/escola_ideal/somaFrequencia/:id', cors(), async function(request, response){
+
+
+    let idMatricula = request.params.id
+
+    let somaFaltas = await controllerFrequencia.getSomaFaltas(idMatricula)
+   
+
+    if(somaFaltas){
+
+        response.json(somaFaltas.stringfy)
+        response.status(200)
+    }else{
+      
+        response.json({message: 'Nenhum registro foi encontrado!'})
+        response.status(404)
+    }
+    
+    
+})
+
+app.post('/v1/escola_ideal/frequencia', cors(), bodyParserJson, async function(request, response){
+
+    
+    let contentType = request.headers['content-type']
+
+    let dadosBody = request.body
+
+    let dadosFrequencia = await controllerFrequencia.setInserirFrequencia(dadosBody, contentType)
+
+    
+
+    response.json(dadosFrequencia)
+    response.status(200)
 })
 
 
