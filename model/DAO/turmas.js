@@ -57,14 +57,15 @@ const updateTurma = async function (id, dadosTurma){
 
     try{
         let sql = `update tbl_turmas set
-            assunto = '${dadosTurma.nome}',
-            data = '${dadosTurma.ano}'
+            nome = '${dadosTurma.nome}',
+            ano = '${dadosTurma.ano}'
             
-            where id = ${id}`
+            where id = ${id};`
 
             
         let rsTurma = await prisma.$executeRawUnsafe(sql)
 
+        
         return rsTurma
 
     }catch (error){

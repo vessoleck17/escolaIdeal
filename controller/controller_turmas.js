@@ -111,19 +111,17 @@ const setAtualizarTurma = async function (id, dadosTurma, contentType){
 
             if(
                 dadosTurma.nome == null || dadosTurma.nome == undefined || dadosTurma.nome == ''|| dadosTurma.nome.length > 6 ||
-                dadosTurma.data == null || dadosTurma.data == undefined || dadosTurma.data == '' || dadosTurma.data.length > 10 ){
+                dadosTurma.ano == null || dadosTurma.ano == undefined || dadosTurma.ano == '' || dadosTurma.ano.length > 10 ){
 
                     return message.ERROR_REQUIRED_FIELDS
                 
             }else {
-                let turmaById = await turmasDAO.selectTurmaById(idTurma)
-
-                if(turmaById){
+    
 
                     let updateTurma = await turmasDAO.updateTurma(id, dadosTurma)
 
                     if(updateTurma){
-                        turmaJson.turma = dadosTurma
+                        turmaJson.turma = updateTurma
                         turmaJson.status_code = message.SUCESS_CREATED_ITEM.status_code
                         turmaJson.message = message.SUCESS_CREATED_ITEM.message
 
@@ -131,9 +129,7 @@ const setAtualizarTurma = async function (id, dadosTurma, contentType){
                     }else{
                         return message.ERROR_INTERNAL_SERVER_DB
                     }
-                }else{
-                    return message.ERROR_NOT_FOUND
-                }
+              
             }
 
         }else{

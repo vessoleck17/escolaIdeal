@@ -63,10 +63,12 @@ const updateComunicado = async function (id, dadosComunicado){
             data = '${dadosComunicado.data}',
             mensagem = '${dadosComunicado.mensagem}'
             
-            where id = ${id}`
+            where id = ${id};`
 
             
         let rsComunicado = await prisma.$executeRawUnsafe(sql)
+
+        console.log(rsComunicado)
 
         return rsComunicado
 

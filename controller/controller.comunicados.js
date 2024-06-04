@@ -101,7 +101,6 @@ const setInserirComunicado = async function (dadosComunicado, contentType){
 const setAtualizarComunicado = async function (id, dadosComunicado, contentType){
     try{
 
-        let idComunicado = id
 
         if(String(contentType).toLowerCase() == 'application/json'){
 
@@ -115,25 +114,23 @@ const setAtualizarComunicado = async function (id, dadosComunicado, contentType)
                     return message.ERROR_REQUIRED_FIELDS
                 
             }else {
-                let comunicadoById = await comunicadosDAO.selectComunicadoById(idComunicado)
 
-                if(comunicadoById){
-
-                    let updateComunicado = await comunicadosDAO.updateComunicado(id, dadosComunicado)
+                    let updateComunicado = await comunicadosDAO.updateComunicado(id,dadosComunicado)
+                    
 
                     if(updateComunicado){
-                        comunicadoJson.comunicado = dadosComunicado
+                        comunicadoJson.comunicado = updateComunicado
                         comunicadoJson.status_code = message.SUCESS_CREATED_ITEM.status_code
                         comunicadoJson.message = message.SUCESS_CREATED_ITEM.message
 
+                        
                         return comunicadoJson
                     }else{
                         return message.ERROR_INTERNAL_SERVER_DB
                     }
-                }else{
-                    return message.ERROR_NOT_FOUND
+
                 }
-            }
+
 
         }else{
             return message.ERROR_CONTENT_TYPE
