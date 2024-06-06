@@ -23,6 +23,7 @@ const controllerDisciplinas = require('./controller/controller_disciplinas')
 const controllerComunicados = require('./controller/controller.comunicados.js')
 const controllerTurmas = require('./controller/controller_turmas.js')
 const controllerFrequencia = require('./controller/controller_frequencia.js')
+const controllerNotas = require('./controller/controller_notas.js')
 
 /****************************** DISCIPLINAS  ***********************************/
 
@@ -271,6 +272,57 @@ app.post('/v1/escola_ideal/frequencia', cors(), bodyParserJson, async function(r
     response.json(dadosFrequencia)
     response.status(200)
 })
+
+/****************************  NOTAS  **************************/
+
+app.post('/v1/escola_ideal/nota', cors(), bodyParserJson, async function(request, response){
+
+    
+    let contentType = request.headers['content-type']
+
+    let dadosBody = request.body
+
+    let dadosNota = await controllerNotas.setInserirNota(dadosBody, contentType)
+
+    
+
+    response.json(dadosNota)
+    response.status(200)
+})
+
+app.put('/v1/escola_ideal/updateNota/:id', cors(), bodyParserJson,  async function(request,response){
+    let idNota = request.params.id
+    let contentType = request.headers['content-type']
+    let dadosBody = request.body
+
+    let atualizacaoNota = await controllerNotas.setAtualizarNota (idNota,dadosBody, contentType)
+
+    response.json(atualizacaoNota)
+    response.status(atualizacaoNota.status_code)
+    
+
+})
+
+app.get('/v1/escola_ideal/notas/:idMatricula/:idDisciplina', cors(), async function(request, response){
+
+
+    let idMatricula = request.params.idMatricula
+    let idDisciplina = request.params.idDisciplina
+
+    let notasDisciplina = await controllerNotas.getNotasDisciplina(idMatricula, idDisciplina)
+    
+    if(notasDisciplina){
+        response.json(notasDisciplina)
+        response.status(200)
+    }else{
+      
+        response.json({message: 'Nenhum registro foi encontrado!'})
+        response.status(404)
+    }
+    
+    
+})
+
 
 
 
