@@ -30,7 +30,7 @@ DEFAULT CHARACTER SET = utf8;
 
 SELECT COUNT(*), id_matricula FROM tbl_frequencia where status=true and id_matricula=5;
 
-alter table tbl_
+
 -- -----------------------------------------------------
 -- Table `db_escola_ideal`.`tbl_sexo`
 -- -----------------------------------------------------
@@ -105,11 +105,12 @@ CREATE TABLE IF NOT EXISTS `db_escola_ideal`.`tbl_professores` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-insert into tbl_professores (nome, data_nascimento, telefone) values 
+insert into tbl_professores (nome, data_nascimento, telefone, id_sexo) values 
 (
 	"Rosita Alves",
     "1984-12-01",
-    "11920190123"
+    "11920190123",
+    2
 );
 
 -- -----------------------------------------------------
@@ -191,7 +192,9 @@ CREATE TABLE IF NOT EXISTS `db_escola_ideal`.`tbl_matriculas` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-insert into tbl_matriculas (data_inicio, id_aluno, data_fim) values ("2023-01-28", "2", null);
+insert into tbl_matriculas (data_inicio, id_aluno, data_fim) values ("2023-01-28", "1", null);
+
+select * from tbl_matriculas;
 
 -- -----------------------------------------------------
 -- Table `db_escola_ideal`.`tbl_frequencia`
@@ -227,11 +230,11 @@ insert into tbl_frequencia
         )values(
             '2023-10-02',
             '1',
-            '5',
-            '2'
+            '1',
+            '1'
         );
         
-        SELECT COUNT(*), id_matricula FROM tbl_frequencia where status=1 and id_matricula=5;
+        SELECT COUNT(*), id_matricula FROM tbl_frequencia where status=1 and id_matricula=1;
         
         select * from tbl_disciplinas;
         
@@ -264,9 +267,18 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 insert into tbl_notas (nota, semestre, id_matricula, id_disciplina) values
-("7", "2", "5" "4");
+("5", "2", 1, 1);
 
-select * from tbl_notas where id_matricula =5;
+select * from tbl_notas where id_matricula = 1 and id_disciplina=1;
+
+select nota, id_disciplina from tbl_notas where id_matricula =1;    
+
+SELECT AVG(nota) AS media
+FROM tbl_notas 
+WHERE id_disciplina = 1 
+  AND id_matricula = 1;
+
+
 
 
 -- -----------------------------------------------------
